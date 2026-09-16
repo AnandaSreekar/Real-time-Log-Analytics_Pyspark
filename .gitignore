@@ -1,0 +1,30 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PySpark / Spark Streaming runtime checkpoints and logs
+data/checkpoints/
+data/input_logs/*.json
+data/input_logs/*.tmp
+data/output_metrics/*.json
+data/output_metrics/*.jsonl
+data/output_metrics/*.tmp
+
+# Keep data directory structure intact
+!data/input_logs/.gitkeep
+!data/output_metrics/.gitkeep
+!data/checkpoints/.gitkeep
+
+# Environments & IDEs
+.env
+.venv
+env/
+venv/
+.vscode/
+.idea/
+
+# OS specific
+Thumbs.db
+Desktop.ini
+.DS_Store

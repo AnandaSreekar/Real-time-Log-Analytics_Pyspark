@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PySpark Real-Time Log Analytics Dashboard</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    
+    <!-- Header Section -->
+    <header class="dashboard-header">
+      <div class="brand">
+        <div class="brand-icon">&#9889;</div>
+        <div>
+          <h1 class="brand-title">PySpark Real-Time Log Analytics</h1>
+          <p class="brand-subtitle">Near Real-Time Structured Streaming &amp; Anomaly Detection Engine</p>
+        </div>
+      </div>
+      <div class="header-status">
+        <div class="status-badge">
+          <span class="pulse-dot" id="pulseDot"></span>
+          <span id="streamStatusText">INITIALIZING</span>
+        </div>
+        <div class="last-updated" id="lastUpdated">Awaiting streaming micro-batch...</div>
+      </div>
+    </header>
+
+    <!-- Rule-Based Anomaly Alert Banner -->
+    <div id="alertBanner" class="alert-banner">
+      <div class="alert-icon">&#9888;</div>
+      <div class="alert-content">
+        <div class="alert-title" id="alertTitle">Anomaly Detected</div>
+        <div class="alert-desc" id="alertDesc">Details regarding the rule threshold breach will appear here.</div>
+      </div>
+    </div>
+
+    <!-- KPI Metric Cards Grid -->
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span>Batch Traffic</span>
+          <span>&#128200;</span>
+        </div>
+        <div class="kpi-value" id="kpiRequests">0</div>
+        <div class="kpi-subtext">Requests / Micro-batch</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span>Error Rate</span>
+          <span>&#9888;</span>
+        </div>
+        <div class="kpi-value" id="kpiErrorRate">0.0%</div>
+        <div class="kpi-subtext">Threshold: &gt; 15.0% Alert</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span>Avg Response Time</span>
+          <span>&#9201;</span>
+        </div>
+        <div class="kpi-value" id="kpiLatency">0.0 ms</div>
+        <div class="kpi-subtext">Latency across batch</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span>Max Latency</span>
+          <span>&#128337;</span>
+        </div>
+        <div class="kpi-value" id="kpiMaxLatency">0 ms</div>
+        <div class="kpi-subtext">Peak recorded latency</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span>5xx Server Errors</span>
+          <span>&#128165;</span>
+        </div>
+        <div class="kpi-value" id="kpi5xx">0</div>
+        <div class="kpi-subtext">Threshold: &ge; 5 Outage Alert</div>
+      </div>
+    </section>
+
+    <!-- Charts Section -->
+    <section class="charts-grid">
+      <!-- Traffic Timeline & Latency Chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h2 class="chart-title">Traffic Velocity &amp; Latency Timeline</h2>
+        </div>
+        <div class="chart-canvas-container">
+          <canvas id="timelineChart"></canvas>
+        </div>
+      </div>
+
+      <!-- HTTP Status Doughnut Chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h2 class="chart-title">HTTP Status Code Distribution</h2>
+        </div>
+        <div class="chart-canvas-container">
+          <canvas id="statusChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lower Section: Top Endpoints & Live Log Stream -->
+    <section class="lower-grid">
+      <!-- Top Requested Endpoints -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h2 class="chart-title">Top Requested Endpoints</h2>
+        </div>
+        <div class="chart-canvas-container">
+          <canvas id="endpointsChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Live Log Stream Feed -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <h2 class="chart-title">Live Ingested Log Stream</h2>
+        </div>
+        <div class="logs-table-container">
+          <table class="logs-table">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Client IP</th>
+                <th>Method</th>
+                <th>Endpoint</th>
+                <th>Status</th>
+                <th>Latency</th>
+              </tr>
+            </thead>
+            <tbody id="logsTableBody">
+              <tr>
+                <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 30px;">
+                  Waiting for incoming logs...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+      <div>PySpark Structured Streaming &bull; Local File-Based Streaming Pipeline</div>
+      <div>Designed for Viva, Interviews &amp; Real-Time Data Engineering Demos</div>
+    </footer>
+
+  </div>
+
+  <!-- Custom JavaScript -->
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
